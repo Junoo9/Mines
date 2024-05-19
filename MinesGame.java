@@ -1,10 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.io.*;
+import java.util.*;
+import java.util.List;
 
 public class MinesGame extends JFrame {
     private User currentUser;
@@ -42,25 +41,25 @@ public class MinesGame extends JFrame {
 
         JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         inputPanel.setBackground(new Color(30, 30, 30));
-        
+
         JLabel betAmountLabel = new JLabel("Bet Amount:");
         betAmountLabel.setForeground(Color.WHITE);
         inputPanel.add(betAmountLabel);
-        
+
         betAmountField = new JTextField(5);
         inputPanel.add(betAmountField);
-        
+
         JLabel mineCountLabel = new JLabel("Mines:");
         mineCountLabel.setForeground(Color.WHITE);
         inputPanel.add(mineCountLabel);
-        
+
         Integer[] mineOptions = new Integer[24];
         for (int i = 1; i <= 24; i++) {
             mineOptions[i - 1] = i;
         }
         mineCountSelector = new JComboBox<>(mineOptions);
         inputPanel.add(mineCountSelector);
-        
+
         startButton = new JButton("Start");
         startButton.setBackground(new Color(0, 153, 76));
         startButton.setForeground(Color.WHITE);
@@ -89,7 +88,7 @@ public class MinesGame extends JFrame {
         profitLabel = new JLabel("Profit: $0.00", SwingConstants.CENTER);
         profitLabel.setForeground(Color.WHITE);
 
-        multiplierLabel = new JLabel("Multiplier: 0.00", SwingConstants.CENTER);
+        multiplierLabel = new JLabel("Multiplier: 1.00", SwingConstants.CENTER);
         multiplierLabel.setForeground(Color.WHITE);
 
         cashoutButton = new JButton("Cashout");
@@ -119,7 +118,7 @@ public class MinesGame extends JFrame {
                 return;
             }
             currentUser.setGamesPlayed(currentUser.getGamesPlayed() + 1);
-            achievementsManager.checkAchievements();
+            updateUserData();
             profit = 0.0f;
             safeClicks = 0;
             profitLabel.setText("Profit: $0.00");
@@ -215,7 +214,7 @@ public class MinesGame extends JFrame {
         currentUser.setBalance(currentUser.getBalance() + profit + betAmount); // Add original bet amount back to the balance
         currentUser.setGamesWon(currentUser.getGamesWon() + 1);
         JOptionPane.showMessageDialog(this, "You cashed out $" + String.format("%.2f", profit) + "!");
-        achievementsManager.checkAchievements();
+        updateUserData();
         endGame();
     }
 
@@ -223,30 +222,60 @@ public class MinesGame extends JFrame {
         // Multiplier formula based on quadratic regression and number of safe clicks
         double baseMultiplier = 0.00459 * mineCount * mineCount - 0.0439 * mineCount + 1.045;
         return baseMultiplier * Math.pow(1.15, safeClicks); // Adjusted multiplier increment based on safe clicks
-    }    
+    }
 
     private void endGame() {
-    gameStarted = false;
-    startButton.setEnabled(true);
-    for (int i = 0; i < 5; i++) {
-        for (int j = 0; j < 5; j++) {
-            gridButtons[i][j].setEnabled(false);
+        gameStarted = false;
+        startButton.setEnabled(true);
+
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                gridButtons[i][j].setEnabled(false);
+            }
+        }
+
+        balanceLabel.setText("Balance: $" + String.format("%.2f", currentUser.getBalance()));
+
+        updateUserData();
+
+        profit = 0.0f;
+        profitLabel.setText("Profit: $0.00");
+        multiplierLabel.setText("Multiplier: 1.00");
+    }
+
+    private void updateUserData() {
+        try {
+            File userFile = new File("users.txt");
+            List<String> userLines = new ArrayList<>();
+
+            if (userFile.exists()) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(userFile))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        userLines.add(line);
+                    }
+                }
+            }
+
+            try (PrintWriter writer = new PrintWriter(new FileWriter(userFile))) {
+                boolean userUpdated = false;
+
+                for (String userLine : userLines) {
+                    User user = User.fromString(userLine);
+                    if (user.getUsername().equals(currentUser.getUsername())) {
+                        writer.println(currentUser.toString());
+                        userUpdated = true;
+                    } else {
+                        writer.println(userLine);
+                    }
+                }
+
+                if (!userUpdated) {
+                    writer.println(currentUser.toString());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
-
-    // Update balance label
-    balanceLabel.setText("Balance: $" + String.format("%.2f", currentUser.getBalance()));
-
-    // Check if the player won the game and update achievements
-    if (profit > 0.0f) {
-        currentUser.setGamesWon(currentUser.getGamesWon());
-        achievementsManager.checkAchievements();
-    }
-
-    // Reset profit, profit label, and multiplier label
-    profit = 0.0f;
-    profitLabel.setText("Profit: $0.00");
-    multiplierLabel.setText("Multiplier: 0.00");
-}
-
 }

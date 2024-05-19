@@ -109,7 +109,7 @@ public class MinesMenu extends JFrame {
         game.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent windowEvent) {
-                achievementsManager.checkAchievements(); // Check achievements after the game window is closed
+                achievementsManager.checkAchievements(true); // Check achievements with notifications after the game window is closed
                 try {
                     UserDataManager.updateUserData(currentUser); // Save user data after achievements are checked
                 } catch (IOException e) {

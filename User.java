@@ -81,4 +81,27 @@ public class User {
     public void setGamesLost(int gamesLost) {
         this.gamesLost = gamesLost;
     }
+
+    public static User fromString(String userString) {
+        String[] parts = userString.split(",");
+        User user = new User(parts[0], parts[1], Float.parseFloat(parts[2]), Integer.parseInt(parts[3]),
+                             Integer.parseInt(parts[4]), Integer.parseInt(parts[5]));
+        if (parts.length > 6) {
+            for (int i = 6; i < parts.length; i++) {
+                user.achievedAchievements.add(parts[i]);
+            }
+        }
+        return user;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(username).append(",").append(password).append(",").append(balance).append(",")
+               .append(gamesPlayed).append(",").append(gamesWon).append(",").append(gamesLost);
+        for (String achievement : achievedAchievements) {
+            builder.append(",").append(achievement);
+        }
+        return builder.toString();
+    }
 }

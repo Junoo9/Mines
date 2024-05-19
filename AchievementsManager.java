@@ -10,7 +10,7 @@ public class AchievementsManager {
         this.user = user;
         achievements = new ArrayList<>();
         initializeAchievements();
-        checkAchievements();
+        checkAchievements(false); // Check achievements without notifications during initialization
     }
 
     private void initializeAchievements() {
@@ -25,28 +25,35 @@ public class AchievementsManager {
         return achievements;
     }
 
-    public void checkAchievements() {
+    public void checkAchievements(boolean showNotification) {
         for (Achievement achievement : achievements) {
             if (!user.getAchievedAchievements().contains(achievement.getName())) {
+                boolean unlocked = false;
                 if (achievement.getName().equals("First Game") && user.getGamesPlayed() >= 1) {
-                    unlockAchievement(achievement);
+                    unlocked = true;
                 } else if (achievement.getName().equals("First Win") && user.getGamesWon() >= 1) {
-                    unlockAchievement(achievement);
+                    unlocked = true;
                 } else if (achievement.getName().equals("High Roller") && user.getBalance() >= 500) {
-                    unlockAchievement(achievement);
+                    unlocked = true;
                 } else if (achievement.getName().equals("Veteran Player") && user.getGamesPlayed() >= 100) {
-                    unlockAchievement(achievement);
+                    unlocked = true;
                 } else if (achievement.getName().equals("Winning Streak") && user.getGamesWon() >= 50) {
-                    unlockAchievement(achievement);
+                    unlocked = true;
+                }
+
+                if (unlocked) {
+                    unlockAchievement(achievement, showNotification);
                 }
             }
         }
     }
 
-    private void unlockAchievement(Achievement achievement) {
+    private void unlockAchievement(Achievement achievement, boolean showNotification) {
         achievement.setAchieved(true);
         user.setBalance(user.getBalance() + achievement.getBonus());
         user.addAchievement(achievement);
-        JOptionPane.showMessageDialog(null, "Achievement Unlocked: " + achievement.getName() + "!\nBonus: $" + achievement.getBonus());
+        if (showNotification) {
+            JOptionPane.showMessageDialog(null, "Achievement Unlocked: " + achievement.getName() + "!\nBonus: $" + achievement.getBonus());
+        }
     }
 }
