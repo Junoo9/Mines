@@ -1,1 +1,3 @@
-charbel,123456,1534.1823,7,6,2,First Game,First Win,High Roller
+charbel,123456,2277.3108,15,7,8,First Game,First Win,High Roller
+kevin,123456,1362.6248,2,2,3
+jury,123456,453.44147,6,3,3,High Roller

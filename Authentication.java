@@ -198,9 +198,4 @@ public class Authentication extends JFrame {
             ex.printStackTrace();
         }
     }    
-
-    public static void main(String[] args) {
-        Authentication authForm = new Authentication(false); // Start with login
-        SwingUtilities.invokeLater(() -> authForm.setVisible(true));
-    }
 }

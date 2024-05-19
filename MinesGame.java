@@ -117,6 +117,7 @@ public class MinesGame extends JFrame {
                 JOptionPane.showMessageDialog(this, "Too many mines! Choose fewer mines.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            currentUser.setBalance(currentUser.getBalance() - betAmount); // Deduct the bet amount at the start
             currentUser.setGamesPlayed(currentUser.getGamesPlayed() + 1);
             updateUserData();
             profit = 0.0f;
@@ -180,8 +181,8 @@ public class MinesGame extends JFrame {
             gridButtons[x][y].setText("\uD83D\uDCA3");
             gridButtons[x][y].setBackground(Color.RED);
             JOptionPane.showMessageDialog(this, "Mine hit! Game over.");
-            currentUser.setBalance(currentUser.getBalance() - betAmount);
             currentUser.setGamesLost(currentUser.getGamesLost() + 1);
+            updateUserData();
             endGame();
         } else {
             if (diamondLocations.contains(clickedPoint)) {
