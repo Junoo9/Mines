@@ -35,7 +35,7 @@ Welcome to the Mines Game! This project is a Java-based implementation of the cl
 
 3. Run the Mines game:
    ```bash
-   java MinesMenu
+   java Driver.java
    ```
 
 ## Credits
