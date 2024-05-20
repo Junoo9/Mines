@@ -183,6 +183,7 @@ public class MinesGame extends JFrame {
             JOptionPane.showMessageDialog(this, "Mine hit! Game over.");
             currentUser.setGamesLost(currentUser.getGamesLost() + 1);
             updateUserData();
+            revealGrid();
             endGame();
         } else {
             if (diamondLocations.contains(clickedPoint)) {
@@ -216,6 +217,7 @@ public class MinesGame extends JFrame {
         currentUser.setGamesWon(currentUser.getGamesWon() + 1);
         JOptionPane.showMessageDialog(this, "You cashed out $" + String.format("%.2f", profit) + "!");
         updateUserData();
+        revealGrid();
         endGame();
     }
 
@@ -225,9 +227,30 @@ public class MinesGame extends JFrame {
         return baseMultiplier * Math.pow(1.15, safeClicks); // Adjusted multiplier increment based on safe clicks
     }
 
+    private void revealGrid() {
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                gridButtons[i][j].setEnabled(false);
+                Point point = new Point(i, j);
+                if (mineLocations.contains(point)) {
+                    gridButtons[i][j].setForeground(Color.WHITE);
+                    gridButtons[i][j].setFont(new Font("Segoe UI Emoji", Font.PLAIN, 31));
+                    gridButtons[i][j].setText("\uD83D\uDCA3");
+                    gridButtons[i][j].setBackground(Color.RED);
+                } else if (diamondLocations.contains(point)) {
+                    gridButtons[i][j].setForeground(Color.WHITE);
+                    gridButtons[i][j].setFont(new Font("Segoe UI Emoji", Font.PLAIN, 31));
+                    gridButtons[i][j].setText("\uD83D\uDC8E");
+                    gridButtons[i][j].setBackground(new Color(0, 204, 204));
+                }
+            }
+        }
+    }
+
     private void endGame() {
         gameStarted = false;
         startButton.setEnabled(true);
+        cashoutButton.setEnabled(false);
 
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
