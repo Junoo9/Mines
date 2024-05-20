@@ -1,4 +1,4 @@
-# Minesweeper Game
+# Mines Game
 
 Welcome to the Minesweeper Game! This project is a Java-based implementation of the classic Minesweeper game. It includes both a menu interface for accessing various game features and the main game interface where players can play the Minesweeper game.
 
