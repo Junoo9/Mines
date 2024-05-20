@@ -222,10 +222,10 @@ public class MinesGame extends JFrame {
     }
 
     private double calculateMultiplier(int mineCount, int safeClicks) {
-        // Multiplier formula based on quadratic regression and number of safe clicks
-        double baseMultiplier = 0.00459 * mineCount * mineCount - 0.0439 * mineCount + 1.025;
-        return baseMultiplier * Math.pow(1.15, safeClicks); // Adjusted multiplier increment based on safe clicks
-    }
+        // Adjusted multiplier formula to better reward higher difficulty with more mines
+        double baseMultiplier = 1 + (mineCount * 0.0856201); // Base multiplier increases linearly with the number of mines
+        return baseMultiplier * Math.pow(1.18354, safeClicks); // Adjusted multiplier increment based on safe clicks
+    }    
 
     private void revealGrid() {
         for (int i = 0; i < 5; i++) {
