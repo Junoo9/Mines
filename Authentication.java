@@ -176,6 +176,10 @@ public class Authentication extends JFrame {
             if (isSignUp) {
                 if (UserDataManager.saveUserData(username, password)) {
                     JOptionPane.showMessageDialog(this, "Signup successful!");
+                    // Switch to login screen after successful signup
+                    Authentication loginForm = new Authentication(false);
+                    loginForm.setVisible(true);
+                    this.dispose();
                 } else {
                     JOptionPane.showMessageDialog(this, "Username already exists!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -197,5 +201,5 @@ public class Authentication extends JFrame {
             JOptionPane.showMessageDialog(this, "Error accessing the user data file.", "Error", JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();
         }
-    }    
+    }       
 }
