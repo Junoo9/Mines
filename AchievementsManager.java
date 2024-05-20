@@ -16,7 +16,7 @@ public class AchievementsManager {
     private void initializeAchievements() {
         achievements.add(new Achievement("First Game", "Play your first game", 50));
         achievements.add(new Achievement("First Win", "Win your first game", 100));
-        achievements.add(new Achievement("High Roller", "Reach a balance of $500", 200));
+        achievements.add(new Achievement("High Roller", "Reach a balance of $500000", 200));
         achievements.add(new Achievement("Veteran Player", "Play 100 games", 300));
         achievements.add(new Achievement("Winning Streak", "Win 50 games", 500));
     }
@@ -33,7 +33,7 @@ public class AchievementsManager {
                     unlocked = true;
                 } else if (achievement.getName().equals("First Win") && user.getGamesWon() >= 1) {
                     unlocked = true;
-                } else if (achievement.getName().equals("High Roller") && user.getBalance() >= 500) {
+                } else if (achievement.getName().equals("High Roller") && user.getBalance() >= 500000) {
                     unlocked = true;
                 } else if (achievement.getName().equals("Veteran Player") && user.getGamesPlayed() >= 100) {
                     unlocked = true;

@@ -221,7 +221,7 @@ public class MinesGame extends JFrame {
 
     private double calculateMultiplier(int mineCount, int safeClicks) {
         // Multiplier formula based on quadratic regression and number of safe clicks
-        double baseMultiplier = 0.00459 * mineCount * mineCount - 0.0439 * mineCount + 1.045;
+        double baseMultiplier = 0.00459 * mineCount * mineCount - 0.0439 * mineCount + 1.025;
         return baseMultiplier * Math.pow(1.15, safeClicks); // Adjusted multiplier increment based on safe clicks
     }
 

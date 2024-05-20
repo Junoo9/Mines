@@ -144,7 +144,7 @@ public class MinesMenu extends JFrame {
         int confirm = JOptionPane.showConfirmDialog(this,
                 "Are you sure you want to reset your progress?", "Reset Progress", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
-            currentUser.setBalance(100);
+            currentUser.setBalance(1000);
             currentUser.setGamesPlayed(0);
             currentUser.setGamesWon(0);
             currentUser.setGamesLost(0);
