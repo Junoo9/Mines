@@ -33,6 +33,8 @@ public class MinesGame extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
+
         JPanel topPanel = new JPanel(new BorderLayout(10, 10));
         topPanel.setBackground(new Color(30, 30, 30));
         balanceLabel = new JLabel("Balance: $" + currentUser.getBalance());
@@ -222,10 +224,15 @@ public class MinesGame extends JFrame {
     }
 
     private double calculateMultiplier(int mineCount, int safeClicks) {
-        // Adjusted multiplier formula to better reward higher difficulty with more mines
-        double baseMultiplier = 1 + (mineCount * 0.0856201); // Base multiplier increases linearly with the number of mines
-        return baseMultiplier * Math.pow(1.18354, safeClicks); // Adjusted multiplier increment based on safe clicks
-    }    
+        // Base multiplier calculated using an exponential growth formula
+        double baseMultiplier = 1.0 + Math.pow(1.1, safeClicks);
+    
+        // Adjust the multiplier based on mine count
+        double mineAdjustment = 1.0 + (mineCount * 0.05);
+    
+        // Final multiplier
+        return baseMultiplier * mineAdjustment;
+    }             
 
     private void revealGrid() {
         for (int i = 0; i < 5; i++) {
