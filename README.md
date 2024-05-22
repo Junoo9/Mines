@@ -40,7 +40,7 @@ Welcome to the Mines Game! This project is a Java-based implementation of the cl
 
 ## Credits
 
-This Mines game project was created by Kevin Botrous, Majd Gerges, Charbel Rahme, Charbel Serhal.
+This Mines game project was created by Kevin Botrous, Majd Gerges, Charbel Rahme.
 
 ## License
 
