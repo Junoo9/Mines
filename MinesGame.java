@@ -210,7 +210,7 @@ public class MinesGame extends JFrame {
 
     private void updateProfit() {
         int mineCount = (int) mineCountSelector.getSelectedItem();
-        double multiplier = calculateMultiplier(mineCount, safeClicks, gameStarted);
+        double multiplier = calculateMultiplier(mineCount, safeClicks);
         multiplierLabel.setText(String.format("Multiplier: %.2f", multiplier));
         profit = (float) ((betAmount * multiplier) - betAmount);
         profitLabel.setText(String.format("Profit: $%.2f", profit));
@@ -226,20 +226,18 @@ public class MinesGame extends JFrame {
         endGame();
     }
 
-    private double calculateMultiplier(int mineCount, int safeClicks, boolean isFirstGem) {
+    private double calculateMultiplier(int mineCount, int safeClicks) {
         double baseMultiplier = 1.0 + Math.pow(1.27, safeClicks);
         double mineAdjustment = 1.0 + (mineCount * 0.06);
-    
-        // Adjust the multiplier differently for each gem
-        if (isFirstGem) {
-            // Decrease the base multiplier for the first gem
-            baseMultiplier *= 0.5; // You can adjust this factor as needed
+
+        if (mineCount <= 10) {
+            return baseMultiplier * mineAdjustment;
+        } else if (mineCount <= 15) {
+            return baseMultiplier * (mineAdjustment + 0.1); // Slightly higher reward for 15 mines
         } else {
-            // Leave the base multiplier unchanged for the second gem
+            return baseMultiplier * (mineAdjustment + 0.2); // Even higher reward for 20 mines
         }
-    
-        return baseMultiplier * mineAdjustment;
-    }           
+    }
 
     private void revealGrid() {
         for (int i = 0; i < 5; i++) {

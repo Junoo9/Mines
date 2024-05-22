@@ -1,4 +1,4 @@
-charbel,123456,21614.348,171,37,5,First Game,First Win,Veteran Player
+charbel,123456,22786.535,182,39,12,First Game,First Win,Veteran Player
 kevin,123456,1362.6248,2,2,3
 jury,123456,453.44147,6,3,3,High Roller
 mohammad,123456,100.0,0,0,2
@@ -7,3 +7,4 @@ sami,123456,950.0,1,0,1
 charbel1,123456,1000.0,0,0,0
 zakaria,zakariaswaidan,1000.0,0,0,1
 rawan,123456,948.1449,4,1,2
+Jury,123456,588.69977,10,2,2
