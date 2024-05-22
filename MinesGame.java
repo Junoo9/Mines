@@ -1,3 +1,4 @@
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -178,6 +179,7 @@ public class MinesGame extends JFrame {
         }
 
         if (mineLocations.contains(clickedPoint)) {
+            playSound("bomb.wav"); // Play mine sound
             gridButtons[x][y].setForeground(Color.WHITE);
             gridButtons[x][y].setFont(new Font("Segoe UI Emoji", Font.PLAIN, 31));
             gridButtons[x][y].setText("\uD83D\uDCA3");
@@ -188,6 +190,7 @@ public class MinesGame extends JFrame {
             revealGrid();
             endGame();
         } else {
+            playSound("gem.wav"); // Play gem sound
             if (diamondLocations.contains(clickedPoint)) {
                 gridButtons[x][y].setForeground(Color.WHITE);
                 gridButtons[x][y].setFont(new Font("Segoe UI Emoji", Font.PLAIN, 31));
@@ -207,7 +210,7 @@ public class MinesGame extends JFrame {
 
     private void updateProfit() {
         int mineCount = (int) mineCountSelector.getSelectedItem();
-        double multiplier = calculateMultiplier(mineCount, safeClicks);
+        double multiplier = calculateMultiplier(mineCount, safeClicks, gameStarted);
         multiplierLabel.setText(String.format("Multiplier: %.2f", multiplier));
         profit = (float) ((betAmount * multiplier) - betAmount);
         profitLabel.setText(String.format("Profit: $%.2f", profit));
@@ -223,16 +226,20 @@ public class MinesGame extends JFrame {
         endGame();
     }
 
-    private double calculateMultiplier(int mineCount, int safeClicks) {
-        // Base multiplier calculated using an exponential growth formula
-        double baseMultiplier = 1.0 + Math.pow(1.1, safeClicks);
+    private double calculateMultiplier(int mineCount, int safeClicks, boolean isFirstGem) {
+        double baseMultiplier = 1.0 + Math.pow(1.27, safeClicks);
+        double mineAdjustment = 1.0 + (mineCount * 0.06);
     
-        // Adjust the multiplier based on mine count
-        double mineAdjustment = 1.0 + (mineCount * 0.05);
+        // Adjust the multiplier differently for each gem
+        if (isFirstGem) {
+            // Decrease the base multiplier for the first gem
+            baseMultiplier *= 0.5; // You can adjust this factor as needed
+        } else {
+            // Leave the base multiplier unchanged for the second gem
+        }
     
-        // Final multiplier
         return baseMultiplier * mineAdjustment;
-    }             
+    }           
 
     private void revealGrid() {
         for (int i = 0; i < 5; i++) {
@@ -306,6 +313,18 @@ public class MinesGame extends JFrame {
                 }
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void playSound(String soundFileName) {
+        try {
+            File soundFile = new File(soundFileName);
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
     }

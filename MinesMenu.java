@@ -15,6 +15,7 @@ public class MinesMenu extends JFrame {
     private JButton resetButton;
     private JButton switchAccountButton;
     private JButton exitButton;
+    private JButton creditsButton; // New Credits button
     private JButton[] buttons;
 
     public MinesMenu(User user) {
@@ -24,7 +25,7 @@ public class MinesMenu extends JFrame {
         setSize(550, 350);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(7, 1, 10, 10)); // 7 rows for menu items and username
+        setLayout(new GridLayout(8, 1, 10, 10)); // Adjusted for 8 rows
         getContentPane().setBackground(new Color(30, 30, 30));
 
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
@@ -48,10 +49,13 @@ public class MinesMenu extends JFrame {
         switchAccountButton = createButton("Switch Account", e -> switchAccount(), KeyEvent.VK_W);
         add(switchAccountButton);
 
+        creditsButton = createButton("Credits", e -> viewCredits(), KeyEvent.VK_C); // New Credits button
+        add(creditsButton);
+
         exitButton = createButton("Exit", e -> System.exit(0), KeyEvent.VK_E);
         add(exitButton);
 
-        buttons = new JButton[]{playButton, statsButton, achievementsButton, resetButton, switchAccountButton, exitButton};
+        buttons = new JButton[]{playButton, statsButton, achievementsButton, resetButton, switchAccountButton, creditsButton, exitButton};
 
         // Set up key bindings for arrow keys
         setupKeyBindings();
@@ -138,7 +142,7 @@ public class MinesMenu extends JFrame {
             achievementsText.append("No achievements yet.");
         }
         JOptionPane.showMessageDialog(this, achievementsText.toString(), "Achievements", JOptionPane.INFORMATION_MESSAGE);
-    }    
+    }
 
     private void resetProgress() {
         int confirm = JOptionPane.showConfirmDialog(this,
@@ -169,5 +173,22 @@ public class MinesMenu extends JFrame {
 
         // Open login screen
         new Authentication(false).setVisible(true);
+    }
+
+    // New method to show the credits
+    private void viewCredits() {
+        String credits = "This Mines game project was created by:\n\n" +
+                         "Kevin Botrous\n" +
+                         "Majd Gerges\n" +
+                         "Charbel Rahme\n" +
+                         "Charbel Serhal\n\n" +
+                         "Special thanks to:\n" +
+                         "GFG\n" +
+                         "w3schools\n\n" +
+                         "References:\n" +
+                         "Java How to Program by Paul Deitel\n\n" +
+                         "This project is licensed under the GNU General Public License v3.0.\n" +
+                         "See the LICENSE file for details.";
+        JOptionPane.showMessageDialog(this, credits, "Credits", JOptionPane.INFORMATION_MESSAGE);
     }
 }
