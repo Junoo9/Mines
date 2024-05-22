@@ -227,17 +227,17 @@ public class MinesGame extends JFrame {
     }
 
     private double calculateMultiplier(int mineCount, int safeClicks) {
-        double baseMultiplier = 1.0 + Math.pow(1.27, safeClicks);
-        double mineAdjustment = 1.0 + (mineCount * 0.06);
-
+        double baseMultiplier = 1.0 + (safeClicks * 0.07 * mineCount);
+        double mineAdjustment = 1.0 + (mineCount * 0.05);
+    
         if (mineCount <= 10) {
             return baseMultiplier * mineAdjustment;
         } else if (mineCount <= 15) {
-            return baseMultiplier * (mineAdjustment + 0.1); // Slightly higher reward for 15 mines
+            return baseMultiplier * (mineAdjustment + 0.1); // Slightly higher reward for 11-15 mines
         } else {
-            return baseMultiplier * (mineAdjustment + 0.2); // Even higher reward for 20 mines
+            return baseMultiplier * (mineAdjustment + 0.15); // Even higher reward for 16-20 mines
         }
-    }
+    }     
 
     private void revealGrid() {
         for (int i = 0; i < 5; i++) {
