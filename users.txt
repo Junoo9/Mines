@@ -1,5 +1,5 @@
-charbel,123456,18449.936,243,40,71,First Game,First Win,Veteran Player
-kevin,123456,1362.6248,2,2,3
+charbel,123456,20406.242,247,42,3
+kevin,123456,1512.6248,2,2,2
 jury,123456,453.44147,6,3,3,High Roller
 mohammad,123456,100.0,0,0,2
 salim199f,1234567,3669.8623,1,1,2

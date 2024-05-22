@@ -18,7 +18,7 @@ public class MinesGame extends JFrame {
     private JLabel profitLabel;
     private JLabel multiplierLabel;
     private JLabel balanceLabel;
-    private int betAmount;
+    private float betAmount;
     private boolean gameStarted = false;
     private float profit = 0.0f;
     private int safeClicks = 0;
@@ -110,7 +110,7 @@ public class MinesGame extends JFrame {
 
     private void startGame(ActionEvent e) {
         try {
-            betAmount = Integer.parseInt(betAmountField.getText());
+            betAmount = Float.parseFloat(betAmountField.getText());
             if (betAmount > currentUser.getBalance()) {
                 JOptionPane.showMessageDialog(this, "Insufficient balance!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
