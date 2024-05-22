@@ -181,7 +181,6 @@ public class MinesMenu extends JFrame {
                          "Kevin Botrous\n" +
                          "Majd Gerges\n" +
                          "Charbel Rahme\n" +
-                         "Charbel Serhal\n\n" +
                          "Special thanks to:\n" +
                          "GFG\n" +
                          "w3schools\n\n" +
