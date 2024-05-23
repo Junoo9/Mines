@@ -234,6 +234,8 @@ public class MinesGame extends JFrame {
             return baseMultiplier * mineAdjustment;
         } else if (mineCount <= 15) {
             return baseMultiplier * (mineAdjustment + 0.1); // Slightly higher reward for 11-15 mines
+        }else if (mineCount == 24){
+            return baseMultiplier * 4 * (mineAdjustment + 0.1);
         } else {
             return baseMultiplier * (mineAdjustment + 0.15); // Even higher reward for 16-20 mines
         }
