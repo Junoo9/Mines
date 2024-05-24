@@ -7,8 +7,11 @@ import java.io.IOException;
 import java.util.List;
 
 public class MinesMenu extends JFrame {
+    // Declaring instance variables for the current user and achievements manager
     private User currentUser;
     private AchievementsManager achievementsManager;
+    
+    // Declaring buttons for the menu
     private JButton playButton;
     private JButton statsButton;
     private JButton achievementsButton;
@@ -16,11 +19,15 @@ public class MinesMenu extends JFrame {
     private JButton switchAccountButton;
     private JButton exitButton;
     private JButton creditsButton; // New Credits button
-    private JButton[] buttons;
+    private JButton[] buttons; // Array to hold all buttons for navigation
 
+    // Constructor for the MinesMenu class
     public MinesMenu(User user) {
+        // Initialize the current user and achievements manager
         currentUser = user;
-        achievementsManager = new AchievementsManager(currentUser); // Initialize AchievementsManager
+        achievementsManager = new AchievementsManager(currentUser);
+        
+        // Set up the main frame
         setTitle("Mines Game - Main Menu");
         setSize(550, 350);
         setLocationRelativeTo(null);
@@ -28,12 +35,15 @@ public class MinesMenu extends JFrame {
         setLayout(new GridLayout(8, 1, 10, 10)); // Adjusted for 8 rows
         getContentPane().setBackground(new Color(30, 30, 30));
 
+        // Set the icon image for the frame
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
 
+        // Create and add a label to show the logged-in user
         JLabel userLabel = new JLabel("Logged in as: " + currentUser.getUsername(), SwingConstants.CENTER);
         userLabel.setForeground(Color.WHITE);
         add(userLabel);
 
+        // Create and add the menu buttons
         playButton = createButton("Play", e -> playGame(), KeyEvent.VK_P);
         add(playButton);
 
@@ -55,15 +65,17 @@ public class MinesMenu extends JFrame {
         exitButton = createButton("Exit", e -> System.exit(0), KeyEvent.VK_E);
         add(exitButton);
 
+        // Store all buttons in an array for navigation
         buttons = new JButton[]{playButton, statsButton, achievementsButton, resetButton, switchAccountButton, creditsButton, exitButton};
 
         // Set up key bindings for arrow keys
         setupKeyBindings();
 
-        // Set the initial focus
+        // Set the initial focus on the play button
         playButton.requestFocusInWindow();
     }
 
+    // Method to create a button with specified text, action, and mnemonic
     private JButton createButton(String text, ActionListener action, int mnemonic) {
         JButton button = new JButton(text);
         button.setBackground(new Color(102, 102, 102));
@@ -74,6 +86,7 @@ public class MinesMenu extends JFrame {
         return button;
     }
 
+    // Method to set up key bindings for navigating the menu
     private void setupKeyBindings() {
         JComponent contentPane = (JComponent) getContentPane();
         int condition = JComponent.WHEN_IN_FOCUSED_WINDOW;
@@ -97,6 +110,7 @@ public class MinesMenu extends JFrame {
         });
     }
 
+    // Method to navigate the menu using arrow keys
     private void navigateMenu(int direction) {
         for (int i = 0; i < buttons.length; i++) {
             if (buttons[i].isFocusOwner()) {
@@ -107,6 +121,7 @@ public class MinesMenu extends JFrame {
         }
     }
 
+    // Method to start the game
     private void playGame() {
         MinesGame game = new MinesGame(currentUser);
         game.setVisible(true);  // Make the game window visible
@@ -123,6 +138,7 @@ public class MinesMenu extends JFrame {
         });
     }
 
+    // Method to view user statistics
     private void viewStats() {
         JOptionPane.showMessageDialog(this, "Stats: \nBalance: " + currentUser.getBalance() +
                 "\nGames Played: " + currentUser.getGamesPlayed() +
@@ -131,6 +147,7 @@ public class MinesMenu extends JFrame {
                 "Statistics", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    // Method to view achievements
     private void viewAchievements() {
         List<Achievement> achievements = achievementsManager.getAchievements();
         StringBuilder achievementsText = new StringBuilder("Achievements:\n");
@@ -144,6 +161,7 @@ public class MinesMenu extends JFrame {
         JOptionPane.showMessageDialog(this, achievementsText.toString(), "Achievements", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    // Method to reset user progress
     private void resetProgress() {
         int confirm = JOptionPane.showConfirmDialog(this,
                 "Are you sure you want to reset your progress?", "Reset Progress", JOptionPane.YES_NO_OPTION);
@@ -161,6 +179,7 @@ public class MinesMenu extends JFrame {
         }
     }
 
+    // Method to switch accounts
     private void switchAccount() {
         // Close all open windows
         Window[] windows = Window.getWindows();
@@ -181,7 +200,6 @@ public class MinesMenu extends JFrame {
                          "Kevin Botrous\n" +
                          "Majd Gerges\n" +
                          "Charbel Rahme\n" +
-                         "Charbel Serhal\n\n" +
                          "Special thanks to:\n" +
                          "GFG\n" +
                          "w3schools\n\n" +
