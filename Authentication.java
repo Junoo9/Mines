@@ -18,7 +18,7 @@ public class Authentication extends JFrame {
     public Authentication(boolean isSignUp) {
         super(isSignUp ? "Sign Up" : "Login");
 
-        // icon 
+        // Set the icon for the window
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
 
         this.isSignUp = isSignUp;
@@ -151,7 +151,8 @@ public class Authentication extends JFrame {
     }
 
     private void performAction(ActionEvent e) {
-        String username = usernameField.getText().trim();
+        // Convert the username to lowercase
+        String username = usernameField.getText().trim().toLowerCase();
         String password = showPasswordCheckBox.isSelected() ? passwordTextField.getText().trim() : new String(passwordField.getPassword()).trim();
     
         // Check username and password length
@@ -174,6 +175,7 @@ public class Authentication extends JFrame {
     
         try {
             if (isSignUp) {
+                // Save user data with lowercase username
                 if (UserDataManager.saveUserData(username, password)) {
                     JOptionPane.showMessageDialog(this, "Signup successful!");
                     // Switch to login screen after successful signup
@@ -184,6 +186,7 @@ public class Authentication extends JFrame {
                     JOptionPane.showMessageDialog(this, "Username already exists!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
+                // Check credentials with lowercase username
                 if (UserDataManager.checkCredentials(username, password)) {
                     User loggedInUser = UserDataManager.getUser(username);
                     if (loggedInUser != null) {

@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.List;
 
 public class MinesGame extends JFrame {
+    // Instance variables for game state and UI components
     private User currentUser;
     private JButton[][] gridButtons = new JButton[5][5];
     private Set<Point> mineLocations = new HashSet<>();
@@ -25,6 +26,7 @@ public class MinesGame extends JFrame {
     private JPanel gridPanel;
     private AchievementsManager achievementsManager;
 
+    // Constructor initializing the game with the current user
     public MinesGame(User user) {
         currentUser = user;
         achievementsManager = new AchievementsManager(currentUser);
@@ -34,14 +36,17 @@ public class MinesGame extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
+        // Set the icon for the game window
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
 
+        // Top panel configuration
         JPanel topPanel = new JPanel(new BorderLayout(10, 10));
         topPanel.setBackground(new Color(30, 30, 30));
         balanceLabel = new JLabel("Balance: $" + currentUser.getBalance());
         balanceLabel.setForeground(Color.WHITE);
         topPanel.add(balanceLabel, BorderLayout.WEST);
 
+        // Input panel configuration within the top panel
         JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         inputPanel.setBackground(new Color(30, 30, 30));
 
@@ -56,6 +61,7 @@ public class MinesGame extends JFrame {
         mineCountLabel.setForeground(Color.WHITE);
         inputPanel.add(mineCountLabel);
 
+        // Mine count selector configuration
         Integer[] mineOptions = new Integer[24];
         for (int i = 1; i <= 24; i++) {
             mineOptions[i - 1] = i;
@@ -63,6 +69,7 @@ public class MinesGame extends JFrame {
         mineCountSelector = new JComboBox<>(mineOptions);
         inputPanel.add(mineCountSelector);
 
+        // Start button configuration
         startButton = new JButton("Start");
         startButton.setBackground(new Color(0, 153, 76));
         startButton.setForeground(Color.WHITE);
@@ -72,6 +79,7 @@ public class MinesGame extends JFrame {
         topPanel.add(inputPanel, BorderLayout.CENTER);
         add(topPanel, BorderLayout.NORTH);
 
+        // Grid panel configuration
         gridPanel = new JPanel(new GridLayout(5, 5, 5, 5));
         gridPanel.setBackground(new Color(50, 50, 50));
         for (int i = 0; i < 5; i++) {
@@ -88,6 +96,7 @@ public class MinesGame extends JFrame {
         }
         add(gridPanel, BorderLayout.CENTER);
 
+        // Bottom panel configuration
         profitLabel = new JLabel("Profit: $0.00", SwingConstants.CENTER);
         profitLabel.setForeground(Color.WHITE);
 
@@ -108,6 +117,7 @@ public class MinesGame extends JFrame {
         add(bottomPanel, BorderLayout.SOUTH);
     }
 
+    // Start game logic
     private void startGame(ActionEvent e) {
         try {
             betAmount = Float.parseFloat(betAmountField.getText());
@@ -138,6 +148,7 @@ public class MinesGame extends JFrame {
         }
     }
 
+    // Generate mine locations
     private void generateMines(int mineCount) {
         mineLocations.clear();
         Random rand = new Random();
@@ -148,6 +159,7 @@ public class MinesGame extends JFrame {
         }
     }
 
+    // Generate diamond locations
     private void generateDiamonds(int maxDiamonds) {
         diamondLocations.clear();
         Random rand = new Random();
@@ -162,6 +174,7 @@ public class MinesGame extends JFrame {
         }
     }
 
+    // Enable the grid for user interaction
     private void enableGrid() {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
@@ -172,6 +185,7 @@ public class MinesGame extends JFrame {
         }
     }
 
+    // Process user clicks on the grid
     private void processClick(int x, int y) {
         Point clickedPoint = new Point(x, y);
         if (!gridButtons[x][y].isEnabled()) {
@@ -208,6 +222,7 @@ public class MinesGame extends JFrame {
         gridButtons[x][y].setEnabled(false);
     }
 
+    // Update profit and multiplier based on user actions
     private void updateProfit() {
         int mineCount = (int) mineCountSelector.getSelectedItem();
         double multiplier = calculateMultiplier(mineCount, safeClicks);
@@ -217,6 +232,7 @@ public class MinesGame extends JFrame {
         cashoutButton.setEnabled(true);
     }
 
+    // Cashout logic for ending the game and updating user balance
     private void cashout() {
         currentUser.setBalance(currentUser.getBalance() + profit + betAmount); // Add original bet amount back to the balance
         currentUser.setGamesWon(currentUser.getGamesWon() + 1);
@@ -226,21 +242,23 @@ public class MinesGame extends JFrame {
         endGame();
     }
 
+    // Calculate the multiplier based on mine count and safe clicks
     private double calculateMultiplier(int mineCount, int safeClicks) {
         double baseMultiplier = 1.0 + (safeClicks * 0.07 * mineCount);
         double mineAdjustment = 1.0 + (mineCount * 0.05);
-    
+
         if (mineCount <= 10) {
             return baseMultiplier * mineAdjustment;
         } else if (mineCount <= 15) {
             return baseMultiplier * (mineAdjustment + 0.1); // Slightly higher reward for 11-15 mines
-        }else if (mineCount == 24){
+        } else if (mineCount == 24) {
             return baseMultiplier * 4 * (mineAdjustment + 0.1);
         } else {
             return baseMultiplier * (mineAdjustment + 0.15); // Even higher reward for 16-20 mines
         }
-    }     
+    }
 
+    // Reveal the entire grid showing all mines and diamonds
     private void revealGrid() {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
@@ -261,6 +279,7 @@ public class MinesGame extends JFrame {
         }
     }
 
+    // End the game, resetting relevant variables and updating UI components
     private void endGame() {
         gameStarted = false;
         startButton.setEnabled(true);
@@ -281,6 +300,7 @@ public class MinesGame extends JFrame {
         multiplierLabel.setText("Multiplier: 1.00");
     }
 
+    // Update user data in the users.txt file
     private void updateUserData() {
         try {
             File userFile = new File("users.txt");
@@ -317,6 +337,7 @@ public class MinesGame extends JFrame {
         }
     }
 
+    // Play sound effect based on user action
     private void playSound(String soundFileName) {
         try {
             File soundFile = new File(soundFileName);
