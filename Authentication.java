@@ -207,6 +207,7 @@ public class Authentication extends JFrame {
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Error accessing the user data file.", "Error", JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();
+            // hi
         }
     }
 }
